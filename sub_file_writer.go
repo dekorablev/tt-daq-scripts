@@ -82,16 +82,19 @@ func main() {
 
 	// Main receive loop
 	for {
-		parts, err := subscriber.RecvBytes(0)
+		//skip topic name
+		_, err := subscriber.RecvBytes(0)
 		if err != nil {
-			log.Printf("Error receiving message: %v", err)
-			continue
+			log.Fatal("Failed to receive topic frame:", err)
 		}
 
-		if len(parts) > 1 {
-			msg := parts[1]//exclude topic name
-			processMessage(msg)
+		// Then receive the actual message
+		msg, err := subscriber.RecvBytes(0)
+		if err != nil {
+			log.Fatal("Failed to receive message:", err)
 		}
+
+		processMessage(msg)
 	}
 }
 
