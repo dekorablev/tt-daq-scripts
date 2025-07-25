@@ -6,9 +6,9 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"sync/atomic"
 	"syscall"
 	"time"
-	"sync/atomic"
 
 	zmq "github.com/pebbe/zmq4"
 )
@@ -82,13 +82,16 @@ func main() {
 
 	// Main receive loop
 	for {
-		msg, err := subscriber.RecvBytes(0)
+		parts, err := subscriber.RecvBytes(0)
 		if err != nil {
 			log.Printf("Error receiving message: %v", err)
 			continue
 		}
 
-		processMessage(msg)
+		if len(parts) > 1 {
+			msg := parts[1]//exclude topic name
+			processMessage(msg)
+		}
 	}
 }
 
