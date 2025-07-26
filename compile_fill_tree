@@ -1,2 +1,0 @@
-g++ -o binaryToRoot binaryToRoot.cpp `root-config --cflags --libs`
-
