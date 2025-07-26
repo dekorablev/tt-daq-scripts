@@ -17,7 +17,7 @@ const (
 	publisherIP    = "10.3.192.105" // or "127.0.0.1" for local testing
 	topicFilter    = "tt_data"
 	outputDir      = "data"
-	maxFileSize    = 500 * 1024 * 1024 // 100MB per file
+	maxFileSize    = 50 * 1024 * 1024 // 100MB per file
 	fileRotateTime = 1 * time.Hour
 )
 
@@ -136,8 +136,9 @@ func rotateFile() error {
 	closeCurrentFile()
 
 	// Generate new filename
-	timestamp := time.Now().Format("20060102_150405")
-	filename := filepath.Join(outputDir, fmt.Sprintf("data_%s_%d.bin", timestamp, fileCounter))
+	////timestamp := time.Now().Format("20060102_150405")
+	////filename := filepath.Join(outputDir, fmt.Sprintf("data_%s_%d.bin", timestamp, fileCounter))
+	filename := filepath.Join(outputDir, fmt.Sprintf("data_part%d.bin", fileCounter))
 	fileCounter++
 
 	// Open new file
